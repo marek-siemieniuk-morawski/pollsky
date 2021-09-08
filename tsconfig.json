@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "compileOnSave": false,
+  "compilerOptions": {
+    "lib": [
+      "es2019"
+    ],
+    "target": "es2019",
+    "module": "commonjs",
+    "types": ["node", "mocha"],
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "strict": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": false, // In my case I don't need it
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "test"
+  ]
+}

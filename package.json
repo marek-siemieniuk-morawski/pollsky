@@ -1,0 +1,47 @@
+{
+  "name": "pollsky",
+  "version": "1.0.0",
+  "description": "Chained Polling Library for Node.js: Friendly API with no external dependencies.",
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "scripts": {
+    "build": "tsc -b tsconfig.json",
+    "prepublishOnly": "npm run build && npm run eslint && npm run test",
+    "test": "nyc --reporter=html --reporter=text --check-coverage=true mocha",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "lint": "eslint . --ext .ts"
+  },
+  "author": "Marek Siemieniuk-Morawski",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pollsky.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pollsky/issues"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.19",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^15.12.5",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "chai": "^4.3.4",
+    "eslint": "^7.32.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "mocha": "^9.0.1",
+    "nyc": "^15.1.0",
+    "prettier": "^2.3.2",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  },
+  "keywords": [
+    "typescript",
+    "promise",
+    "promises",
+    "poller",
+    "polling",
+    "poll"
+  ]
+}

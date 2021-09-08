@@ -1,0 +1,45 @@
+import { TimeUnit } from "./types";
+
+/**
+ * Attributes of `Time` class constructor
+ */
+interface TimeAttributes {
+	interval: number;
+	unit: TimeUnit;
+}
+
+/**
+ * 🔧 Helper class to store time interval and unit of time.
+ */
+export class Time {
+	/**
+	 * Time unit duration multiplayer.
+	 */
+	private static TIME_UNIT_MULTIPLIER: { [key in TimeUnit]: number } = {
+    'milliseconds': 1,
+    'seconds': 1000,
+    'minutes': 60 * 1000
+  }
+
+	/**
+	 * Time length, duration and size.
+	 */
+	interval: number;
+
+	/**
+	 * Time unit.
+	 */
+	unit: TimeUnit;
+
+	constructor(attributes: TimeAttributes) {
+		this.interval = attributes.interval;
+		this.unit = attributes.unit;
+	}
+
+	/**
+	 * Coverts an object to milliseconds.
+	 */
+	toMilliseconds(): number {
+		return this.interval * Time.TIME_UNIT_MULTIPLIER[this.unit];
+	}
+}
