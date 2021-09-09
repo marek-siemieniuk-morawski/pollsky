@@ -2,12 +2,11 @@
   "name": "pollsky",
   "version": "1.0.0",
   "description": "Chained Polling Library for Node.js: Friendly API with no external dependencies.",
-  "main": "./dist/src/index.js",
-  "module": "./dist/src/index.js",
-  "types": "./dist/src/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -b tsconfig.json",
-    "prepublishOnly": "npm run build && npm run eslint && npm run test",
+    "prepublishOnly": "npm run build && npm run lint && npm run test",
     "test": "nyc --reporter=html --reporter=text --check-coverage=true mocha",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint . --ext .ts"

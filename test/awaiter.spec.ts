@@ -1,10 +1,19 @@
 import { AtMostConditionError, ExceptionOccurredError } from '../src/errors';
 
+import Pollsky from '../src/pollsky';
 import { Timer } from './helpers';
 import { expect } from 'chai';
 import { poll } from '../src';
 
 describe('Pollsky', function () {
+  describe('wait()', function () {
+    it('returns a new instance of Pollsky', function () {
+      const pollsky = poll(async () => 'foo');
+
+      expect(pollsky).instanceOf(Pollsky);
+    });
+  });
+
   describe('until()', function () {
     it('returns a value of asyncFn() if conditionFn() returns `true` immedietly', async function () {
       const asyncFnThatIsResolvedImmedietly = async () => 'foo';

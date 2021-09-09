@@ -1,8 +1,8 @@
 import { AtLeastConditionError, AtMostConditionError, ConditionFunctionError, ExceptionOccurredError } from "./errors";
 
-import { DEBUG } from "./debug";
 import { Time } from "./utils";
 import { TimeUnit } from "./types";
+import { debug } from "./debug";
 
 /**
  * ⛓ Chained Polling Library for Node.js
@@ -76,7 +76,7 @@ class Pollsky<T> {
 	 * Starts polling.
 	 */
 	async until(conditionFn: (value: T) => boolean): Promise<T> {
-		DEBUG && console.log(`Polling started. Parameters:`, { 
+		debug(`Polling started. Parameters:`, { 
 			isIgnoreErrors: this.isIgnoreErrors, 
 			interval: this.pollingInterval,
 			atLeastCondition: this.atLeastDuration,
@@ -146,24 +146,24 @@ class Pollsky<T> {
 			return this.checkConditions(await this.executeAsyncFn(this.asyncFn), conditionFn);
 		} catch (error) {
 			if (error instanceof AtLeastConditionError) {
-				DEBUG && console.log(error.message);
+				debug(error.message);
 			}
 
 			if (error instanceof ConditionFunctionError) {
-				DEBUG && console.log(error.message);
+				debug(error.message);
 			}
 
 			if (error instanceof AtMostConditionError) {
-				DEBUG && console.log(error.message);
+				debug(error.message);
 				
 				throw error;
 			}
 
 			if (error instanceof ExceptionOccurredError) {
 				if (this.isIgnoreErrors) {
-					DEBUG && console.log('Ignoring error: ' + error.message);
+					debug('Ignoring error: ' + error.message);
 				} else {
-					DEBUG && console.log(error.message);
+					debug(error.message);
 
 					throw error;
 				}
@@ -183,7 +183,7 @@ class Pollsky<T> {
 		this.retries++;
 
 		try {
-			DEBUG && console.log(`Executing asyncFn()... Retry: ${this.retries}`);
+			debug(`Executing asyncFn()... Retry: ${this.retries}`);
 			
 			return await asyncFn();
 		} catch (error) {
@@ -207,7 +207,7 @@ class Pollsky<T> {
 			throw new AtLeastConditionError();
 		}
 
-		DEBUG && console.log('Polling finished with success - conditionFn() returned `true`');
+		debug('Polling finished with success - conditionFn() returned `true`');
 
 		return result;
 	}

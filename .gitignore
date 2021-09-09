@@ -76,3 +76,6 @@ common/temp/
 
 # Ignore Git hooks
 /git-hooks/
+
+# Dist
+/dist/
