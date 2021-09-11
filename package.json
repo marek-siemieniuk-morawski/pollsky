@@ -1,6 +1,6 @@
 {
   "name": "pollsky",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Chained Polling Library for Node.js: Friendly API with no external dependencies.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,11 +14,11 @@
   "author": "Marek Siemieniuk-Morawski",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pollsky.git"
+    "url": "https://github.com/marek-siemieniuk-morawski/pollsky"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pollsky/issues"
+    "url": "https://github.com/marek-siemieniuk-morawski/pollsky/issues"
   },
   "devDependencies": {
     "@types/chai": "^4.2.19",
