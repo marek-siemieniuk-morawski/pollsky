@@ -22,7 +22,7 @@ export class Time {
   }
 
 	/**
-	 * Time length, duration and size. (???)
+	 * Time value
 	 */
 	interval: number;
 
