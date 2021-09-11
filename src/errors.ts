@@ -1,6 +1,6 @@
 export class ConditionFunctionError extends Error {
   constructor() {
-    super('Condition is not met - function `conditionFn() returned `false` not `true`.');
+    super('Condition is not met - function `conditionFn() returned `false` instead of `true`.');
 
     Object.setPrototypeOf(this, ConditionFunctionError.prototype);
   }
@@ -8,7 +8,7 @@ export class ConditionFunctionError extends Error {
 
 export class AtLeastConditionError extends Error {
   constructor() {
-    super('Function `conditionFn()` returned `true` but atLeast timeout has not be called yet.');
+    super('Function `conditionFn()` returned `true` but atLeast timeout has not beeen called yet.');
 
     Object.setPrototypeOf(this, AtLeastConditionError.prototype);
   }
@@ -24,7 +24,7 @@ export class AtMostConditionError extends Error {
 
 export class ExceptionOccurredError extends Error {
   constructor(originalMessage: string) {
-    super(`During execution asyncFn() thrown an error. Details: ${originalMessage}`);
+    super(`During execution of asyncFn() an error was thrown. Details: ${originalMessage}`);
 
     Object.setPrototypeOf(this, ExceptionOccurredError.prototype);
   }

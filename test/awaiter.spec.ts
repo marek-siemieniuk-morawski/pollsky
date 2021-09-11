@@ -18,7 +18,7 @@ describe('Pollsky', function () {
     it('returns a value of asyncFn() if conditionFn() returns `true` immedietly', async function () {
       const asyncFnThatIsResolvedImmedietly = async () => 'foo';
 
-      const conditionFnThatReturnsTrue = (value: string) => value === 'foo';
+      const conditionFnThatReturnsTrue = (value: string) => value === 'foo'; // i'm heavily against using 'foo' as variable name in production instance of the library.  Var name should be meaningful
 
       const result = await poll(asyncFnThatIsResolvedImmedietly).until(conditionFnThatReturnsTrue);
 
@@ -46,7 +46,7 @@ describe('Pollsky', function () {
     it('throws AtMostConditionError if atMost() is used and conditionFn() doesn\'t return "true" before timeout is called', async function () {
       const asyncFnThatIsResolvedImmedietly = async () => 'foo';
 
-      const conditionFnThatReturnsFalse = (value: string) => value === 'bar';
+      const conditionFnThatReturnsFalse = (value: string) => value === 'bar'; // same as above
 
       try {
         await poll(asyncFnThatIsResolvedImmedietly)
@@ -57,7 +57,7 @@ describe('Pollsky', function () {
       }
     });
 
-    it('changes default interval duration when used .withInterval()', async function() {
+    it('changes default interval duration when .withInterval() is used', async function() {
       const timer = new Timer();
 
       const asyncFnThatIsResolvedInTwoSeconds = async () => 

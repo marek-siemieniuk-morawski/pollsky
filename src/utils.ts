@@ -9,7 +9,7 @@ interface TimeAttributes {
 }
 
 /**
- * 🔧 Helper class to store time interval and unit of time.
+ * 🔧 Helper class to store time interval and units of time.
  */
 export class Time {
 	/**
@@ -22,7 +22,7 @@ export class Time {
   }
 
 	/**
-	 * Time length, duration and size.
+	 * Time length, duration and size. (???)
 	 */
 	interval: number;
 
@@ -37,7 +37,7 @@ export class Time {
 	}
 
 	/**
-	 * Coverts an object to milliseconds.
+	 * Converts an object to milliseconds.
 	 */
 	toMilliseconds(): number {
 		return this.interval * Time.TIME_UNIT_MULTIPLIER[this.unit];
