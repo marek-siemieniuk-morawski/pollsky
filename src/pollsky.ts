@@ -10,19 +10,19 @@ import { debug } from "./debug";
  */
 class Pollsky<T> {
 	/**
-	 * Asynchronous to be polled until `conditionFn()` has returned `true` value
+	 * Asynchronous function to be polled until `conditionFn()` has returned `true` value
 	 * or, if defined, until the master timeout has been called.
 	 */
 	private asyncFn: () => Promise<T>;
 
 	/**
-	 * The number of how many times `asyncFn()` has invoked before `conditionFn()`
+	 * The number of times the `asyncFn()` has invoked before `conditionFn()`
 	 * returns true.
 	 */
 	private retries = 0;
 
 	/**
-	 * The period of time between the end of the last retry and the next one.
+	 * Time between the end of last retry and the next one.
 	 * @default { value: 1000, unit: 'milliseconds' }
 	 */
 	private pollingInterval = new Time({
@@ -31,7 +31,7 @@ class Pollsky<T> {
 	});
 
 	/**
-	 * The period of how long `asyncFn()` is invoked until the master timeout has called.
+	 * How long `asyncFn()` is invoked until the master timeout has been called.
 	 */
 	private atMostDuration?: Time;
 
@@ -62,7 +62,7 @@ class Pollsky<T> {
 	private isIgnoreErrors = false;
 
 	/** 
-	 * Static method created only to be exported and achieve "cleaner" API this way. 
+	 * Static method created only to be exported, and thus achieve "cleaner" API. 
 	 */
 	static wait<T>(asyncFn: () => Promise<T>): Pollsky<T> {
 		return new Pollsky(asyncFn);
@@ -93,7 +93,7 @@ class Pollsky<T> {
 	}
 
 	/** 
-	 * Makes polling to stop with failure when timeout is called. 
+	 * Stops polling with failure when timeout is called. 
 	 */
 	atMost(interval: number, unit: TimeUnit): Pollsky<T> {
 		this.atMostDuration = new Time({ interval, unit });
@@ -106,7 +106,7 @@ class Pollsky<T> {
 	}
 
 	/** 
-	 * Makes polling to wait at least a certain amount of time until returned the result. 
+	 * Makes polling wait at least a certain amount of time until the result is returned. 
 	 */
 	atLeast(interval: number, unit: TimeUnit): Pollsky<T> {
 		this.atMostDuration = new Time({ interval, unit });
@@ -128,7 +128,7 @@ class Pollsky<T> {
 	}
 
 	/** 
-	 * Makes that errors thrown by `asyncFn` are being ignored. 
+	 * Causes errors thrown by `asyncFn` being ignored. 
 	 */
 	ignoreErrors(): Pollsky<T> {
 		this.isIgnoreErrors = true;
@@ -177,7 +177,7 @@ class Pollsky<T> {
 
 	/**
 	 * Performs a single execution of `asyncFn` and wraps it with `try catch`
-	 * to throw custom error to be handled properly.
+	 * in order to throw custom error and handle it properly.
 	 */
 	private async executeAsyncFn<T>(asyncFn: () => Promise<T>): Promise<T> {
 		this.retries++;
@@ -192,7 +192,7 @@ class Pollsky<T> {
 	}
 
 	/** 
-	 * Checks if all conditions are met and if any is not met it throws a customer error. 
+	 * Checks if all conditions are met and if not, throws a custom error. 
 	 */
 	private checkConditions<T>(result: T, conditionFn: (value: T) => boolean): T {		
 		if (this.atMostTimeoutToBeCalled) {	

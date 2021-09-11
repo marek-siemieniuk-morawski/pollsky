@@ -47,7 +47,7 @@ describe('Pollsky', function () {
       const asyncFnThatIsResolvedImmedietly = async () => 'foo';
 
       const conditionFnThatReturnsFalse = (value: string) => value === 'bar';
-
+      
       try {
         await poll(asyncFnThatIsResolvedImmedietly)
           .atMost(1000, 'milliseconds')
@@ -57,7 +57,7 @@ describe('Pollsky', function () {
       }
     });
 
-    it('changes default interval duration when used .withInterval()', async function() {
+    it('changes default interval duration when .withInterval() is used', async function() {
       const timer = new Timer();
 
       const asyncFnThatIsResolvedInTwoSeconds = async () => 
