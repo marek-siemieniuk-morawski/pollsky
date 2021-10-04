@@ -61,6 +61,11 @@ class Pollsky<T> {
 	 */
 	private isIgnoreErrors = false;
 
+	/**
+	 * Instructs Pollsky to return a value even if master timeout is called.
+	 */
+	private isReturnValueIfFailed = false;
+
 	/** 
 	 * Static method created only to be exported, and thus achieve "cleaner" API. 
 	 */
@@ -130,6 +135,15 @@ class Pollsky<T> {
 	/** 
 	 * Causes errors thrown by `asyncFn` being ignored. 
 	 */
+	 returnValueIfFailed(): Pollsky<T> {
+		this.isReturnValueIfFailed = true;
+
+		return this;
+	}
+
+	/** 
+	 * Causes errors thrown by `asyncFn` being ignored. 
+	 */
 	ignoreErrors(): Pollsky<T> {
 		this.isIgnoreErrors = true;
 
@@ -155,7 +169,7 @@ class Pollsky<T> {
 
 			if (error instanceof AtMostConditionError) {
 				debug(error.message);
-				
+
 				throw error;
 			}
 
@@ -195,7 +209,11 @@ class Pollsky<T> {
 	 * Checks if all conditions are met and if not, throws a custom error. 
 	 */
 	private checkConditions<T>(result: T, conditionFn: (value: T) => boolean): T {		
-		if (this.atMostTimeoutToBeCalled) {	
+		if (this.atMostTimeoutToBeCalled) {
+			if (this.isReturnValueIfFailed) {
+				return result;
+			}
+
 			throw new AtMostConditionError();
 		}
 

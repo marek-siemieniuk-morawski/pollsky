@@ -5,5 +5,5 @@
     "ts-node/register"
   ],
   "spec": ["test/**/*.spec.ts"],
-  "timeout": 10000
+  "timeout": 20000
 }

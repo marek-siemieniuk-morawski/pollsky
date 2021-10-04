@@ -57,6 +57,19 @@ describe('Pollsky', function () {
       }
     });
 
+    it('returns a value of the very last attempt if atMost() and allowFailure() are used and when conditionFn() doesn\'t return "true" before timeout is called', async function () {
+      const asyncFnThatIsResolvedImmedietly = async () => 'foo';
+
+      const conditionFnThatReturnsFalse = (value: string) => value === 'bar';
+
+      const value = await poll(asyncFnThatIsResolvedImmedietly)
+        .atMost(1000, 'milliseconds')
+        .returnValueIfFailed()
+        .until(conditionFnThatReturnsFalse);
+
+      expect(value).to.be.equal('foo');
+    });
+
     it('changes default interval duration when .withInterval() is used', async function() {
       const timer = new Timer();
 
