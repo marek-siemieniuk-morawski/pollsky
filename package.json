@@ -9,7 +9,7 @@
     "prepublishOnly": "npm run build && npm run lint && npm run test",
     "test": "nyc --reporter=html --reporter=text --check-coverage=true mocha",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts --fix"
   },
   "author": "Marek Siemieniuk-Morawski",
   "repository": {

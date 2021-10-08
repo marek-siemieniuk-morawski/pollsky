@@ -140,7 +140,7 @@ class Pollsky<T> {
 	/** 
 	 * Causes errors thrown by `asyncFn` being ignored. 
 	 */
-	 returnValueIfFailed(): Pollsky<T> {
+	returnValueIfFailed(): Pollsky<T> {
 		this.isReturnValueIfFailed = true;
 
 		return this;

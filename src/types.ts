@@ -14,4 +14,4 @@ export interface Failure<T> {
 	errorMsg: string;
 	result?: T;
 	timestamp: string
-};
+}
