@@ -1,4 +1,4 @@
-import { AtMostConditionError, ExceptionOccurredError } from '../src/errors';
+import { AtMostConditionError, ExceptionOccurredError, PollingFailedError } from '../src/errors';
 
 import Pollsky from '../src/pollsky';
 import { Timer } from './helpers';
@@ -53,7 +53,8 @@ describe('Pollsky', function () {
           .atMost(1000, 'milliseconds')
           .until(conditionFnThatReturnsFalse);
       } catch (error) {
-        expect(error).to.be.instanceOf(AtMostConditionError);
+        expect(error).to.be.instanceOf(PollingFailedError);
+        expect(error.failures.at(-1).error).to.equal('AtMostConditionError');
       }
     });
 
@@ -115,7 +116,8 @@ describe('Pollsky', function () {
       try {
         await poll(asyncFnThatThrowsErrorImmedietly).until(conditionFnThatNeverBeUsed);
       } catch (error) {
-        expect(error).to.be.instanceOf(ExceptionOccurredError);
+        expect(error).to.be.instanceOf(PollingFailedError);
+        expect(error.failures.at(-1).error).to.equal('ExceptionOccurredError');
       }
     });
 
