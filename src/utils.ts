@@ -43,3 +43,5 @@ export class Time {
 		return this.interval * Time.TIME_UNIT_MULTIPLIER[this.unit];
 	}
 }
+
+export const getTimestamp = () => new Date().toISOString();

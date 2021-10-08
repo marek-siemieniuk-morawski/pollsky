@@ -1,7 +1,7 @@
-import { AtLeastConditionError, AtMostConditionError, ConditionFunctionError, ExceptionOccurredError } from "./errors";
+import { AtLeastConditionError, AtMostConditionError, ConditionFunctionError, ExceptionOccurredError, PollingFailedError, PollskyError } from "./errors";
 
-import { Time } from "./utils";
-import { TimeUnit } from "./types";
+import { getTimestamp, Time } from "./utils";
+import { Failure, TimeUnit } from "./types";
 import { debug } from "./debug";
 
 /**
@@ -20,6 +20,11 @@ class Pollsky<T> {
 	 * returns true.
 	 */
 	private retries = 0;
+
+	/**
+	 * 
+	 */
+	private failures: Failure<T>[] = [];
 
 	/**
 	 * Time between the end of last retry and the next one.
@@ -159,33 +164,30 @@ class Pollsky<T> {
 		try {
 			return this.checkConditions(await this.executeAsyncFn(this.asyncFn), conditionFn);
 		} catch (error) {
-			if (error instanceof AtLeastConditionError) {
-				debug(error.message);
-			}
+			if (error instanceof PollskyError) {
+				this.failures.push({
+					error: error.name,
+					errorMsg: error.message,
+					result: error.result,
+					timestamp: new Date().toISOString()
+				});
 
-			if (error instanceof ConditionFunctionError) {
-				debug(error.message);
-			}
-
-			if (error instanceof AtMostConditionError) {
-				debug(error.message);
-
-				throw error;
-			}
-
-			if (error instanceof ExceptionOccurredError) {
-				if (this.isIgnoreErrors) {
-					debug('Ignoring error: ' + error.message);
-				} else {
-					debug(error.message);
-
-					throw error;
+				if (error instanceof AtMostConditionError) {
+					throw new PollingFailedError(this.failures);
 				}
+	
+				if (error instanceof ExceptionOccurredError) {
+					if (!this.isIgnoreErrors) {
+						throw new PollingFailedError(this.failures);
+					}
+				}
+
+				await this.wait(this.pollingInterval.toMilliseconds());
+
+				return this.poll(asyncFn, conditionFn, retries + 1);
 			}
 
-			await this.wait(this.pollingInterval.toMilliseconds());
-
-			return this.poll(asyncFn, conditionFn, retries + 1);
+			throw error;
 		}
 	}
 
@@ -201,7 +203,7 @@ class Pollsky<T> {
 			
 			return await asyncFn();
 		} catch (error) {
-			throw new ExceptionOccurredError(error.message);
+			throw new ExceptionOccurredError<T>(error.message, { timestamp: getTimestamp() });
 		}
 	}
 
@@ -211,21 +213,25 @@ class Pollsky<T> {
 	private checkConditions<T>(result: T, conditionFn: (value: T) => boolean): T {		
 		if (this.atMostTimeoutToBeCalled) {
 			if (this.isReturnValueIfFailed) {
+				debug('Master timeout called but the flag returnValueIfFailed is set');
+				debug('Returning the last result.');
+	
 				return result;
 			}
 
-			throw new AtMostConditionError();
+			throw new AtMostConditionError({ timestamp: getTimestamp(), result: result });
 		}
 
 		if (conditionFn(result) === false) {
-			throw new ConditionFunctionError();
+			throw new ConditionFunctionError({ timestamp: getTimestamp(), result: result });
 		}
 
 		if (this.atLeastTimeout) {
-			throw new AtLeastConditionError();
+			throw new AtLeastConditionError({ timestamp: getTimestamp(), result: result });
 		}
 
-		debug('Polling finished with success - conditionFn() returned `true`');
+		debug('Polling finished with success - conditionFn() returned `true`.');
+		debug('Returning the last result.');
 
 		return result;
 	}
