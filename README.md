@@ -129,15 +129,15 @@ try {
 
 ## Roadmap
 
-[X] Allow returning a result even if polling failed
+- [x] Allow returning a result even if polling failed
 
-[X] Extend error object to contain failures history
+- [x] Extend error object to contain failures history
 
-[] Allow initialising custom Pollsky object with predefined options
+- [ ] Allow initialising custom Pollsky object with predefined options
 
-[] Implement increasing interval strategies, fibonacci sequence et al.
+- [ ] Implement increasing interval strategies, fibonacci sequence et al.
 
-[] Add event emitter
+- [ ] Add event emitter
 
 ## Credits
 
