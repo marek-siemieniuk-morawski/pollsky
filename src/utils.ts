@@ -1,7 +1,7 @@
 import { TimeUnit } from "./types";
 
 /**
- * Attributes of `Time` class constructor
+ * Properties of `Time` class constructor
  */
 interface TimeAttributes {
 	interval: number;

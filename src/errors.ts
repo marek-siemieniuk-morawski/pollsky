@@ -1,4 +1,12 @@
-import { ErrorDetails, ErrorProperties, Failure } from "./types";
+import { Failure } from "./types";
+
+/**
+ * Properties of `PollskyError` class constructor
+ */
+export interface PollskyErrorAttributes<T> {
+	timestamp: string;
+	result?: T;
+}
 
 /**
  * ✋ Base class for custom error types.
@@ -8,7 +16,7 @@ export class PollskyError<T> extends Error {
 
   result?: T;
 
-  constructor(message: string, { timestamp, result }: ErrorProperties<T>) {
+  constructor(message: string, { timestamp, result }: PollskyErrorAttributes<T>) {
     super(message);
 
     this.timestamp = timestamp;
@@ -16,20 +24,12 @@ export class PollskyError<T> extends Error {
 
     Object.setPrototypeOf(this, PollskyError.prototype);
   }
-
-  getDetails(): ErrorDetails<T> {
-    return {
-      message: this.message,
-      timestamp: this.timestamp,
-      result: this.result
-    }
-  }
 }
 
 export class ConditionFunctionError<T> extends PollskyError<T> {
   name = 'ConditionFunctionError';
 
-  constructor(props: ErrorProperties<T>) {
+  constructor(props: PollskyErrorAttributes<T>) {
     super('Condition is not met - function `conditionFn() returned `false` instead of `true`.', props);
 
     Object.setPrototypeOf(this, ConditionFunctionError.prototype);
@@ -39,7 +39,7 @@ export class ConditionFunctionError<T> extends PollskyError<T> {
 export class AtLeastConditionError<T> extends PollskyError<T> {
   name = 'AtLeastConditionError';
 
-  constructor(props: ErrorProperties<T>) {
+  constructor(props: PollskyErrorAttributes<T>) {
     super('Function `conditionFn()` returned `true` but atLeast timeout has not been called yet.', props);
 
     Object.setPrototypeOf(this, AtLeastConditionError.prototype);
@@ -49,7 +49,7 @@ export class AtLeastConditionError<T> extends PollskyError<T> {
 export class AtMostConditionError<T> extends PollskyError<T> {
   name = 'AtMostConditionError';
 
-  constructor(props: ErrorProperties<T>) {
+  constructor(props: PollskyErrorAttributes<T>) {
     super('Timeout has called before condition is met.', props);
 
     Object.setPrototypeOf(this, AtMostConditionError.prototype);
@@ -59,8 +59,8 @@ export class AtMostConditionError<T> extends PollskyError<T> {
 export class ExceptionOccurredError<T> extends PollskyError<T> {
   name = 'ExceptionOccurredError';
 
-  constructor(originalMessage: string, props: ErrorProperties<T>) {
-    super(`During execution of asyncFn() an error was thrown. Details: ${originalMessage}`, props);
+  constructor(errorMsg: string, props: PollskyErrorAttributes<T>) {
+    super(`During execution of asyncFn() an error was thrown. Message: ${errorMsg}`, props);
 
     Object.setPrototypeOf(this, ExceptionOccurredError.prototype);
   }
@@ -69,10 +69,10 @@ export class ExceptionOccurredError<T> extends PollskyError<T> {
 export class PollingFailedError<T> extends Error {
   failures: Failure<T>[];
 
-  constructor(errors: Failure<T>[]) {
-    super(`Polling failed after ${errors.length} retries. Details: ${JSON.stringify(errors, null, 2)}`);
+  constructor(failures: Failure<T>[]) {
+    super(`Polling failed after ${failures.length} retries. Details: ${JSON.stringify(failures, null, 2)}`);
 
-    this.failures = errors;
+    this.failures = failures;
 
     Object.setPrototypeOf(this, PollingFailedError.prototype);
   }
