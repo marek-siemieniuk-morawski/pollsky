@@ -87,9 +87,9 @@ You can instruct *Pollsky* to wait a certain amount of time
   poll(waitForSomething).atMost(30, 'seconds').until(checkCondition);
 ```
 
-If we don't want to *Pollsky* to throw an error at the very end if polling failed we can use `returnValueIfFailed()` to return the last result
+If we don't want to *Pollsky* to throw an error at the very end if polling failed we can use `dontThrowError()` to return the last result
 ```
-  poll(waitForSomething).returnValueIfFailed().until(conditionThatFails);
+  poll(waitForSomething).dontThrowError().until(conditionThatFails);
 ```
 
 ## Debugging
