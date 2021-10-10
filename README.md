@@ -65,8 +65,8 @@ By default *Pollsky* does not call timeout and is being executed without the end
   // In seconds...
   poll(waitForSomething).atMost(20, 'seconds').until(checkCondition);
 
-    // ...and in milliseconds if you like
-poll(waitForSomething).atMost(500, 'milliseconds').until(checkCondition);
+  // ...and in milliseconds if you like
+  poll(waitForSomething).atMost(500, 'milliseconds').until(checkCondition);
 ```
 
 Using `withInterval()` we can change the polling interval:
