@@ -65,7 +65,7 @@ describe('Pollsky', function () {
 
       const value = await poll(asyncFnThatIsResolvedImmedietly)
         .atMost(1000, 'milliseconds')
-        .returnValueIfFailed()
+        .dontThrowError()
         .until(conditionFnThatReturnsFalse);
 
       expect(value).to.be.equal('foo');
