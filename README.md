@@ -87,7 +87,7 @@ You can instruct *Pollsky* to wait a certain amount of time
   poll(waitForSomething).atMost(30, 'seconds').until(checkCondition);
 ```
 
-If we don't want to *Pollsky* to throw an error at the very end if polling failed we can use `dontThrowError()` to return the last result
+If we don't want *Pollsky* to throw when polling fails we can use `dontThrowError()` to return the last result
 ```
   poll(waitForSomething).dontThrowError().until(conditionThatFails);
 ```
@@ -100,7 +100,7 @@ If we don't want to *Pollsky* to throw an error at the very end if polling faile
   $ DEBUG=pollsky node script.js
 ```
 
-2. Error's `failures` object - an error thrown on failure includes a property `failures` that contains a history of throw errors
+2. Error's `failures` object - an error thrown on failure includes property `failures` that contains history of thrown errors
 ```
   try {
     await poll(async () => 'foo')
@@ -129,9 +129,9 @@ If we don't want to *Pollsky* to throw an error at the very end if polling faile
 
 ## Roadmap
 
-[X] Allow to return a result even if polling failed
+[X] Allow returning a result even if polling failed
 [X] Extend error object to contain failures history
-[] Allow to initialise a custom Pollsky object with predefined options
+[] Allow initialising custom Pollsky object with predefined options
 [] Implement increasing interval strategies, fibonacci sequence et al.
 [] Add event emitter
 
